@@ -1,0 +1,25 @@
+{
+    "name": "Test",
+    "level": "easy",
+    "number_of_questions": 1,
+    "questions": [
+        {
+            "statement": "How much is 2 + 2?",
+            "options": {
+                "1": "4",
+                "2": "3",
+                "3": "5"
+            },
+            "answer": "1"
+        },
+        {
+            "statement": "How much is 5 + 2?",
+            "options": {
+                "1": "6",
+                "2": "19",
+                "3": "7"
+            },
+            "answer": "3"
+        }
+    ]
+}
