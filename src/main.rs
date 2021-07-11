@@ -15,7 +15,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 println!("{:?}", quiz);
                 let ui = Ui::new(&quiz);
 
-                ui.play()
+                ui.play()?
             }
             QuizSubcommands::List(opts) => println!("{:?}", opts),
         };

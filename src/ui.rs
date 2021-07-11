@@ -26,13 +26,13 @@ impl<'a> Ui<'a> {
         }
     }
 
-    pub fn play(&self) {
+    pub fn play(&self) -> Result<(), IoError> {
         let mut right_answers = 0;
         let mut wrong_answers = 0;
 
         for question in self.quiz.questions.iter() {
             self.clear_screen();
-            print!("{}\r\n", question.statement);
+            print!("{}{}{}\r\n", style::Bold, question.statement, style::Reset);
 
             for (key, value) in question.options.iter() {
                 print!("{}) {}\r\n", key, value);
@@ -44,13 +44,16 @@ impl<'a> Ui<'a> {
                         Signal::CorrectAnswer => right_answers += 1,
                         Signal::WrongAnswer => wrong_answers += 1,
                         Signal::WrongKey => continue,
-                        Signal::Quit => break,
+                        Signal::Quit => {
+                            print!("You cancelled the quiz\r\n");
+                            return Ok(());
+                        }
                     },
-                    Err(e) => panic!("Error: {}", e),
-                }
+                    Err(e) => return Err(e),
+                };
                 break;
             }
-            self.clear_screen()
+            self.clear_screen();
         }
 
         print!("Yay! You've reached the end! Here's the result: \r\n");
@@ -66,6 +69,8 @@ impl<'a> Ui<'a> {
             wrong_answers,
             style::Reset
         );
+
+        Ok(())
     }
 
     fn clear_screen(&self) {
@@ -82,6 +87,7 @@ impl<'a> Ui<'a> {
                 let contains_typed_key = q.options.contains_key(&c.to_string());
 
                 if !contains_typed_key {
+                    print!("This is not a valid alternative!\r\n");
                     return Ok(Signal::WrongKey);
                 }
 
@@ -95,7 +101,10 @@ impl<'a> Ui<'a> {
                     Ok(Signal::WrongAnswer)
                 }
             }
-            _ => Ok(Signal::WrongKey),
+            _ => {
+                print!("This is not a valid alternative!\r\n");
+                Ok(Signal::WrongKey)
+            }
         }
     }
 
