@@ -27,6 +27,11 @@ impl<'a> Ui<'a> {
     }
 
     pub fn play(&self) -> Result<(), IoError> {
+        if self.quiz.questions.len() == 0 {
+            print!("This quiz has 0 questions!\r\n");
+            return Ok(());
+        }
+
         let mut right_answers = 0;
         let mut wrong_answers = 0;
 

@@ -1,4 +1,3 @@
-use std::path::PathBuf;
 use structopt::StructOpt;
 
 #[derive(Debug, StructOpt)]
@@ -17,17 +16,19 @@ impl Cli {
 
 #[derive(StructOpt, Debug)]
 pub enum QuizSubcommands {
-    #[structopt(name = "list")]
-    List(ListOpts),
+    #[structopt(name = "init")]
+    Init(InitOpts),
     #[structopt(name = "play")]
     Play(PlayOpts),
 }
 
 #[derive(StructOpt, Debug)]
-pub struct ListOpts {}
+pub struct InitOpts {}
 
 #[derive(StructOpt, Debug)]
 pub struct PlayOpts {
-    #[structopt(name = "file", parse(from_os_str))]
-    pub file: PathBuf,
+    #[structopt(long, short)]
+    pub custom: bool,
+    #[structopt(name = "quiz-name")]
+    pub quiz: String,
 }
